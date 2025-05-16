@@ -1,5 +1,6 @@
 package com.discord.Projekat_Izbori.models;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,35 +8,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 @Entity
-@Table(name = "settlement")
-public class Settlement {
+@Table(name = "final_results")
+public class FinalResults {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String settlementName;
+    private String linkToReport;
 
     @Column(nullable = false)
-    private Integer votersBySettlement;
+    private Integer invalidBallots;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SettlementType settlementType;
+    private Integer unusedBallots;
+
+    @OneToOne
+    @JoinColumn(name = "polling_place_id")
+    @JsonIgnore
+    private PollingPlace pollingPlace;
+
 
     @ManyToOne
-    @JoinColumn(name = "municipality_id")
+    @JoinColumn(name = "final_results_id")
     @JsonIgnore
-    private Municipality municipality;
+    private FinalResults finalResults;
 
-    @OneToMany(mappedBy = "settlement", cascade = CascadeType.ALL)
-    private List<PollingPlace> pollingPlaces;
 }

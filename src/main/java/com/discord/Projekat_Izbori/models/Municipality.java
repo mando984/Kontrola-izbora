@@ -1,5 +1,6 @@
 package com.discord.Projekat_Izbori.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,9 +21,19 @@ public class Municipality {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String municipalityName;
 
-    private Integer totalVoters;
+    @Column(nullable = false)
+    private Integer totalVotersByMunicipality;
+
+    @Column(nullable = false)
+    private Integer rikCode;
+
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    @JsonIgnore
+    private District district;
 
     @OneToMany(mappedBy = "municipality", cascade = CascadeType.ALL)
     private List<Settlement> settlements;

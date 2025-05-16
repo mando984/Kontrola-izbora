@@ -6,36 +6,35 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "settlement")
-public class Settlement {
+@Table(name = "hourly_turnout")
+public class HourlyTurnout {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String settlementName;
-
-    @Column(nullable = false)
-    private Integer votersBySettlement;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SettlementType settlementType;
+    private ReportHours reportHours;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime receivedTime;
+
+    @Column(nullable = false)
+    private Integer turnout;
 
     @ManyToOne
-    @JoinColumn(name = "municipality_id")
+    @JoinColumn(name = "polling_place_id")
     @JsonIgnore
-    private Municipality municipality;
-
-    @OneToMany(mappedBy = "settlement", cascade = CascadeType.ALL)
-    private List<PollingPlace> pollingPlaces;
+    private PollingPlace pollingPlace;
 }
