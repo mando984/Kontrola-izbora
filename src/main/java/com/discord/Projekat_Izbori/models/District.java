@@ -27,4 +27,6 @@ public class District {
 
     @OneToMany(mappedBy = "district", cascade = CascadeType.ALL)
     private List<Municipality> municipalities;
+
+
 }
