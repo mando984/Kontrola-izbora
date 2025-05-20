@@ -10,4 +10,6 @@ public interface MunicipalityRepository extends JpaRepository<Municipality, Long
 
     @Override
     List<Municipality> findAll();
+
+    Optional<Municipality> findByMunicipalityName(String municipalityName);
 }
