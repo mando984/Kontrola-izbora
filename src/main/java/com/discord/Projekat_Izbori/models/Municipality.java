@@ -37,4 +37,5 @@ public class Municipality {
 
     @OneToMany(mappedBy = "municipality", cascade = CascadeType.ALL)
     private List<Settlement> settlements;
+
 }
