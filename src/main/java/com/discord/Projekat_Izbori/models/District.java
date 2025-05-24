@@ -17,7 +17,7 @@ import java.util.List;
 public class District {
 
     @Id
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String districtName;

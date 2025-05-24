@@ -1,6 +1,6 @@
 package com.discord.Projekat_Izbori.services;
 
-import com.discord.Projekat_Izbori.dto.input.VotingRawDTO;
+import com.discord.Projekat_Izbori.dto.input.VotingRowDTO;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -10,15 +10,15 @@ import java.util.List;
 public class DataCacheService {
 
     private final RikImportService rikImportService;
-    private List<VotingRawDTO> cache;
+    private List<VotingRowDTO> cache;
 
     public DataCacheService(RikImportService rikImportService) {
         this.rikImportService = rikImportService;
     }
 
-    public List<VotingRawDTO> getCacheDate() throws IOException {
+    public List<VotingRowDTO> getCacheDate() throws IOException {
         if(cache == null){
-            cache = rikImportService.importDate();
+            cache = rikImportService.importData();
         }
         return cache;
     }

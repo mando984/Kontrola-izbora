@@ -14,14 +14,15 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "settlement")
+@Table(name = "settlement",
+        uniqueConstraints = { @UniqueConstraint(columnNames = {"settlement_name", "municipality_id"})})
 public class Settlement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column(nullable = false)
+    @Column(name = "settlement_name", nullable = false)
     private String settlementName;
 
     @Column(nullable = false)
@@ -32,7 +33,7 @@ public class Settlement {
     private SettlementType settlementType;
 
     @ManyToOne
-    @JoinColumn(name = "municipality_id")
+    @JoinColumn(name = "municipality_id", nullable = false)
     @JsonIgnore
     private Municipality municipality;
 
