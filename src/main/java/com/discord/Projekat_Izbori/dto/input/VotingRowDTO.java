@@ -1,11 +1,15 @@
 package com.discord.Projekat_Izbori.dto.input;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class VotingRawDTO {
+public class VotingRowDTO {
 
-    private Long districtId;
+    private Integer districtId;
 
     private String districtName;
 
@@ -13,7 +17,7 @@ public class VotingRawDTO {
 
     private String municipalityName;
 
-    private Long pollingPlaceId;
+    private Integer pollingPlaceId;
 
     private String pollingPlaceName;
 

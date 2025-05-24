@@ -21,7 +21,7 @@ public class Irregularity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @CreationTimestamp
     @Column(nullable = false)

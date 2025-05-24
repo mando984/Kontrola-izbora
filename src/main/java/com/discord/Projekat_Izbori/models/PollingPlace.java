@@ -14,11 +14,13 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "polling_place")
+@Table(name = "polling_place", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"id", "settlement_id"})
+})
 public class PollingPlace {
 
     @Id
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private String pollingPlaceName;
@@ -26,13 +28,17 @@ public class PollingPlace {
     @Column(nullable = false)
     private String street;
 
-    @Column(nullable = false)
-    private Integer numberOfVoters;
+    @Column(name = "official_registered_voters", nullable = false)
+    private Integer officialRegisteredVoters;
 
-    private Integer paperVoterCount;
+    @Column(name = "polling_station_paper_voters")
+    private Integer pollingStationPaperVoters;
+
+    @Column(name = "ballot_count")
+    private Integer ballotCount;
 
     @ManyToOne
-    @JoinColumn(name = "settlement_id")
+    @JoinColumn(name = "settlement_id", nullable = false)
     @JsonIgnore
     private Settlement settlement;
 
@@ -46,5 +52,4 @@ public class PollingPlace {
     @JoinColumn(name = "final_results_id")
     @JsonIgnore
     private FinalResults finalResults;
-
 }

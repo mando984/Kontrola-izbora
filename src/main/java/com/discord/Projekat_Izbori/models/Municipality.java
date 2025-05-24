@@ -18,17 +18,13 @@ import java.util.List;
 public class Municipality {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private String municipalityName;
 
     @Column(nullable = false)
     private Integer totalVotersByMunicipality;
-
-    @Column(nullable = false)
-    private Integer rikCode;
 
     @ManyToOne
     @JoinColumn(name = "district_id")

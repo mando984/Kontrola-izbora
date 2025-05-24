@@ -1,6 +1,6 @@
 package com.discord.Projekat_Izbori.aggregators;
 
-import com.discord.Projekat_Izbori.dto.input.VotingRawDTO;
+import com.discord.Projekat_Izbori.dto.input.VotingRowDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,26 +10,26 @@ import java.util.stream.Collectors;
 @Service
 public class VotingAggregator {
 
-    public Map<String, Integer> aggregateByDistrict(List<VotingRawDTO> data) {
-        return data.stream()
-                .collect(Collectors
-                        .groupingBy(VotingRawDTO::getDistrictName,
-                                Collectors.summingInt(VotingRawDTO::getNumberOfVoters)));
 
+    public Map<Integer, Integer> aggregateByDistrictId(List<VotingRowDTO> data) {
+        return data.stream()
+                .collect(Collectors.groupingBy(VotingRowDTO::getDistrictId,
+                        Collectors.summingInt(VotingRowDTO::getNumberOfVoters)));
     }
 
-    public Map<String, Integer> aggregateByMunicipality(List<VotingRawDTO> data){
+
+    public Map<Integer, Integer> aggregateByMunicipalityId(List<VotingRowDTO> data){
         return  data.stream()
-                .collect(Collectors
-                        .groupingBy(VotingRawDTO::getMunicipalityName,
-                                Collectors.summingInt(VotingRawDTO::getNumberOfVoters)));
+                .collect(Collectors.groupingBy(VotingRowDTO::getMunicipalityId,
+                        Collectors.summingInt(VotingRowDTO::getNumberOfVoters)));
     }
 
 
-    public Map<String, Integer> aggregateBySettlement(List<VotingRawDTO> data){
+    public Map<String, Integer> aggregateBySettlementNameAndMunicipalityId(List<VotingRowDTO> data){
         return data.stream()
-                .collect(Collectors
-                        .groupingBy(VotingRawDTO::getSettlement,
-                                Collectors.summingInt(VotingRawDTO::getNumberOfVoters)));
+                .collect(Collectors.groupingBy(dto -> dto.getSettlement() + "_" + dto.getMunicipalityId(),
+                        Collectors.summingInt(VotingRowDTO::getNumberOfVoters)));
     }
+
+
 }

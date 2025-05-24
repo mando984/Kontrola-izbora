@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface MunicipalityRepository extends JpaRepository<Municipality, Long> {
+public interface MunicipalityRepository extends JpaRepository<Municipality, Integer> {
 
     @Override
     List<Municipality> findAll();

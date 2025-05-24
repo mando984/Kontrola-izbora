@@ -1,40 +1,41 @@
 package com.discord.Projekat_Izbori.services;
 
-import com.discord.Projekat_Izbori.aggregators.VotingAggregator;
-import com.discord.Projekat_Izbori.dto.input.VotingRawDTO;
+import com.discord.Projekat_Izbori.dto.input.VotingRowDTO;
 import com.discord.Projekat_Izbori.mappers.DistrictMapper;
 import com.discord.Projekat_Izbori.models.District;
 import com.discord.Projekat_Izbori.repositories.DistrictRepository;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DistrictService {
 
     private final DistrictRepository districtRepository;
     private final DistrictMapper districtMapper;
-    private final VotingAggregator votingAggregator;
 
-    public DistrictService(DistrictRepository districtRepository, DistrictMapper districtMapper, VotingAggregator votingAggregator) {
+    public DistrictService(DistrictRepository districtRepository, DistrictMapper districtMapper) {
         this.districtRepository = districtRepository;
         this.districtMapper = districtMapper;
-        this.votingAggregator = votingAggregator;
     }
 
-    public District extractDistrict(List<VotingRawDTO> dtos) throws IOException {
+    public District findOrCreateDistrict(VotingRowDTO dto) {
+        Optional<District> existingDistrict = districtRepository.findById(dto.getDistrictId());
 
-        VotingRawDTO firstRow = dtos.get(0);
-        District district = districtMapper.mapFrom(firstRow);
-        district.setTotalVotersByDistrict(votingAggregator.aggregateByDistrict(dtos).get(firstRow.getDistrictName()));
-        return district;
+        if (existingDistrict.isPresent()) {
+            return existingDistrict.get();
+        } else {
+            District newDistrict = districtMapper.mapFrom(dto);
+
+            return districtRepository.save(newDistrict);
+        }
     }
 
-    public void saveDistrict(District d){
-        districtRepository.findByDistrictName(d.getDistrictName())
-                .orElseGet(() -> districtRepository.save(d));
-
+    public void updateDistrictTotalVoters(Integer districtId, Integer totalVoters) {
+        districtRepository.findById(districtId).ifPresent(district -> {
+            district.setTotalVotersByDistrict(totalVoters);
+            districtRepository.save(district);
+        });
     }
 
 }
