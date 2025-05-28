@@ -12,6 +12,7 @@ public class MunicipalityMapper {
         Municipality municipality = new Municipality();
         municipality.setMunicipalityName(dto.getMunicipalityName());
         municipality.setId(dto.getMunicipalityId());
+        municipality.setTotalVotersByMunicipality(0);
         return municipality;
     }
 }

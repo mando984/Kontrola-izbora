@@ -34,7 +34,6 @@ public class MunicipalityService {
 
             Municipality newMunicipality = municipalityMapper.mapFrom(dto);
             newMunicipality.setDistrict(district);
-            newMunicipality.setTotalVotersByMunicipality(0);
             return municipalityRepository.save(newMunicipality);
         }
     }

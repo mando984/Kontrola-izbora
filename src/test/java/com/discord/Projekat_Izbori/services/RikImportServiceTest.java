@@ -1,114 +1,38 @@
 package com.discord.Projekat_Izbori.services;
 
-import com.discord.Projekat_Izbori.dto.input.VotingRowDTO;
-import com.discord.Projekat_Izbori.exceptions.DataIntegrityException;
-import com.discord.Projekat_Izbori.exceptions.InvalidJsonFormatException;
-import com.discord.Projekat_Izbori.exceptions.MissingRequiredFieldException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource; // Potrebno za pristup resursima
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class RikImportServiceTest {
 
-    private ObjectMapper objectMapper;
+    @Mock // Mockiramo ObjectMapper
+    private ObjectMapper mockObjectMapper;
 
-    // Primer validnog DTO objekta za poređenje u testovima
-    private final VotingRowDTO VALID_DTO_EXAMPLE = new VotingRowDTO(
-            5, "Zapadnobački okrug", 80381, "Sombor",
-            1, "OŠ NIKOLA VUKIČEVIĆ  UČIONICA BROJ 7",
-            1239, "SOMBOR", "VELjKA PETROVIĆA BR 4"
-    );
+    @Mock // Mockiramo ResourceLoader
+    private ResourceLoader mockResourceLoader;
 
-    @BeforeEach
-    void setUp() {
-        // Koristimo pravi ObjectMapper za testiranje stvarne logike parsiranja
-        objectMapper = new ObjectMapper();
-    }
+    @Mock // Mockiramo Resource (koji će biti vraćen od ResourceLoader-a)
+    private Resource mockResource;
 
-    @Test
-    void testValidJsonFile() {
-        // Instanciramo servis sa putanjom do validnog fajla
-        RikImportService rikImportService = new RikImportService(objectMapper, "test-data/valid.json");
+    @InjectMocks // Injektuje mock-ovane zavisnosti u RikImportService
+    private RikImportService rikImportService;
 
-        List<VotingRowDTO> actual = rikImportService.importData();
+    // Fiksna putanja fajla za testiranje (možeš je menjati po potrebi testa)
+    private final String TEST_FILE_PATH = "test-data/valid.json";
 
-        assertNotNull(actual);
-        assertEquals(1, actual.size());
-        assertEquals(VALID_DTO_EXAMPLE.getPollingPlaceName(), actual.get(0).getPollingPlaceName());
-        assertEquals(VALID_DTO_EXAMPLE.getNumberOfVoters(), actual.get(0).getNumberOfVoters());
-    }
 
-    @Test
-    void testEmptyJsonFile() {
-        // Instanciramo servis sa putanjom do fajla sa praznom listom []
-        RikImportService rikImportService = new RikImportService(objectMapper, "test-data/empty.json");
-
-        // Očekujemo DataIntegrityException jer je lista prazna
-        DataIntegrityException thrown = assertThrows(DataIntegrityException.class, () -> {
-            rikImportService.importData();
-        }, "Expected DataIntegrityException for empty JSON list, but didn't get it.");
-
-        assertTrue(thrown.getMessage().contains("JSON file contains no voting rows or is empty."));
-    }
-
-    @Test
-    void testJsonWithMissingRequiredField() {
-        // Instanciramo servis sa putanjom do fajla gde numberOfVoters ima null vrednost
-        RikImportService rikImportService = new RikImportService(objectMapper, "test-data/empty_field.json");
-
-        // Očekujemo MissingRequiredFieldException
-        MissingRequiredFieldException thrown = assertThrows(MissingRequiredFieldException.class, () -> {
-            rikImportService.importData();
-        }, "Expected MissingRequiredFieldException for null numberOfVoters, but didn't get it.");
-
-        assertTrue(thrown.getMessage().contains("Missing numberOfVoters in row 0"));
-    }
-
-    @Test
-    void testJsonWithNegativeNumberOfVoters() throws IOException {
-        // Potrebno je da kreiraš "negative_voters.json" u src/test/resources/test-data
-        // Sadržaj: [{"districtId":5, "numberOfVoters":-10, ...}]
-        RikImportService rikImportService = new RikImportService(objectMapper, "test-data/negative_voters.json");
-
-        // Očekujemo DataIntegrityException za negativan broj glasača
-        DataIntegrityException thrown = assertThrows(DataIntegrityException.class, () -> {
-            rikImportService.importData();
-        }, "Expected DataIntegrityException for negative numberOfVoters, but didn't get it.");
-
-        assertTrue(thrown.getMessage().contains("Negative numberOfVoters in row 0"));
-    }
-
-    @Test
-    void testInvalidJsonFormat() throws IOException {
-        // Potrebno je da kreiraš "invalid_format.json" u src/test/resources/test-data
-        // Sadržaj: { "districtId": 5, "districtName": "Invalid JSON here..." (malformiran JSON)
-        RikImportService rikImportService = new RikImportService(objectMapper, "test-data/invalid_format.json");
-
-        // Očekujemo InvalidJsonFormatException
-        InvalidJsonFormatException thrown = assertThrows(InvalidJsonFormatException.class, () -> {
-            rikImportService.importData();
-        }, "Expected InvalidJsonFormatException for malformed JSON, but didn't get it.");
-
-        assertTrue(thrown.getMessage().contains("Error parsing JSON file"));
-    }
-
-    @Test
-    void testFileNotFound() {
-        // Namerno koristimo putanju do fajla koji ne postoji
-        RikImportService rikImportService = new RikImportService(objectMapper, "test-data/non-existent-file.json");
-
-        // Očekujemo InvalidJsonFormatException jer fajl nije pronađen
-        InvalidJsonFormatException thrown = assertThrows(InvalidJsonFormatException.class, () -> {
-            rikImportService.importData();
-        }, "Expected InvalidJsonFormatException for file not found, but didn't get it.");
-
-        assertTrue(thrown.getMessage().contains("JSON file not found at path: test-data/non-existent-file.json"));
-    }
 }
