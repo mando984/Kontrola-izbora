@@ -12,7 +12,7 @@ public class PollingPlaceMapper {
         PollingPlace pollingPlace = new PollingPlace();
         pollingPlace.setId(dto.getPollingPlaceId());
         pollingPlace.setPollingPlaceName(dto.getPollingPlaceName());
-        pollingPlace.setStreet(dto.getStreet());
+        pollingPlace.setStreetName(dto.getStreetName());
 
         pollingPlace.setOfficialRegisteredVoters(dto.getNumberOfVoters());
 

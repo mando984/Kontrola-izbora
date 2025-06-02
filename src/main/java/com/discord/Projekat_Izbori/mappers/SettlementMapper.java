@@ -11,16 +11,19 @@ public class SettlementMapper {
     public static Settlement mapFrom(VotingRowDTO dto){
 
         Settlement settlement = new Settlement();
-        settlement.setSettlementName(dto.getSettlement());
+        settlement.setId(dto.getSettlementId());
 
+        settlement.setSettlementName(dto.getSettlementName());
         settlement.setVotersBySettlement(0);
-
-        if (dto.getSettlement().toUpperCase().equals(dto.getMunicipalityName().toUpperCase())) {
-            settlement.setSettlementType(SettlementType.CITY);
-        } else {
+        try {
+            if (dto.getSettlementType().equals("G")) {
+                settlement.setSettlementType(SettlementType.CITY);
+            } else if (dto.getSettlementType().equals("O")) {
+                settlement.setSettlementType(SettlementType.VILLAGE);
+            }
+        }catch (NullPointerException e){
             settlement.setSettlementType(SettlementType.VILLAGE);
         }
-
         return settlement;
     }
 }

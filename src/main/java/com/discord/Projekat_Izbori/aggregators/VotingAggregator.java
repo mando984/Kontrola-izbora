@@ -27,7 +27,7 @@ public class VotingAggregator {
 
     public Map<String, Integer> aggregateBySettlementNameAndMunicipalityId(List<VotingRowDTO> data){
         return data.stream()
-                .collect(Collectors.groupingBy(dto -> dto.getSettlement() + "_" + dto.getMunicipalityId(),
+                .collect(Collectors.groupingBy(dto -> dto.getSettlementName() + "_" + dto.getMunicipalityId(),
                         Collectors.summingInt(VotingRowDTO::getNumberOfVoters)));
     }
 

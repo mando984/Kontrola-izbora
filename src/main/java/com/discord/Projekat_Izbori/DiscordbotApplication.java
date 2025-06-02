@@ -36,7 +36,5 @@ public class DiscordbotApplication {
         	rikProcessingService.processAll();
 
 		};
-
 	}
-
 }

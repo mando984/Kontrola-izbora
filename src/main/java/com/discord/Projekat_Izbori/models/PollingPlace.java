@@ -26,7 +26,7 @@ public class PollingPlace {
     private String pollingPlaceName;
 
     @Column(nullable = false)
-    private String street;
+    private String streetName;
 
     @Column(name = "official_registered_voters", nullable = false)
     private Integer officialRegisteredVoters;

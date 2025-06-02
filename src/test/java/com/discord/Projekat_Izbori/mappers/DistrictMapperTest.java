@@ -21,15 +21,16 @@ class DistrictMapperTest {
     void shouldMapVotingRowDtoToDistrict() {
         // ARRANGE
         VotingRowDTO dto = new VotingRowDTO(
-                5, "zapadnobacki", 0, "Sombor", 2,
-                "Miletic mz", 800, "Lemes", "Oktobarska"
+                4, "zapadnobacki", 1, "Sombor",
+                2, "Miletic mz", 800,
+                "Lemes","O", 803979, "Oktobarska"
         );
 
         // ACT
         District district = districtMapper.mapFrom(dto);
 
         // ASSERT
-        District expected = new District(5, "zapadnobacki", 0, null);
+        District expected = new District(4, "zapadnobacki", 0, null);
         assertEquals(expected.getDistrictName(), district.getDistrictName());
         assertEquals(expected.getId(), district.getId());
         assertEquals(expected.getTotalVotersByDistrict(), district.getTotalVotersByDistrict());
@@ -39,8 +40,9 @@ class DistrictMapperTest {
     void shouldHandleNullDistrictIdGracefully() {
         // ARRANGE
         VotingRowDTO dto = new VotingRowDTO(
-                null, "zapadnobacki", 0, "Sombor", 2,
-                "Miletic mz", 800, "Lemes", "Oktobarska"
+                null, "zapadnobacki", 1, "Sombor",
+                2, "Miletic mz", 800,
+                "Lemes","O", 803979, "Oktobarska"
         );
 
         // ACT
@@ -56,8 +58,9 @@ class DistrictMapperTest {
     void shouldHandleNullDistrictNameGracefully() {
         // ARRANGE
         VotingRowDTO dto = new VotingRowDTO(
-                5, null, 0, "Sombor", 2,
-                "Miletic mz", 800, "Lemes", "Oktobarska"
+                4, null, 1, "Sombor",
+                2, "Miletic mz", 800,
+                "Lemes","O", 803979, "Oktobarska"
         );
 
         // ACT
@@ -65,15 +68,16 @@ class DistrictMapperTest {
 
         // ASSERT
         assertNull(district.getDistrictName(), "District name should be null when input is null");
-        assertEquals(5, district.getId());
+        assertEquals(4, district.getId());
     }
 
     @Test
     void shouldHandleEmptyDistrictName() {
         // ARRANGE
         VotingRowDTO dto = new VotingRowDTO(
-                5, "", 0, "Sombor", 2,
-                "Miletic mz", 800, "Lemes", "Oktobarska"
+                4, "", 1, "Sombor",
+                2, "Miletic mz", 800,
+                "Lemes","O", 803979, "Oktobarska"
         );
 
         // ACT
@@ -81,6 +85,6 @@ class DistrictMapperTest {
 
         // ASSERT
         assertTrue(StringUtils.isBlank(district.getDistrictName()), "District name should be blank");
-        assertEquals(5, district.getId());
+        assertEquals(4, district.getId());
     }
 }

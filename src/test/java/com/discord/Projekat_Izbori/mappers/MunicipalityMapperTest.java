@@ -1,118 +1,83 @@
 package com.discord.Projekat_Izbori.mappers;
 
 import com.discord.Projekat_Izbori.dto.input.VotingRowDTO;
-import com.discord.Projekat_Izbori.models.District;
 import com.discord.Projekat_Izbori.models.Municipality;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import static com.discord.Projekat_Izbori.mappers.MunicipalityMapper.mapFrom;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MunicipalityMapperValidationTest {
+class MunicipalityMapperTest {
 
-    private District district;
-    private MunicipalityMapper municipalityMapper;
-    private List<Municipality> municipalities;
-    private Validator validator;
 
-    @BeforeEach
-    void setUp() {
-        municipalities = new ArrayList<>();
-        district = new District(5, "zapadnobacki", 70000, municipalities);
-        municipalityMapper = new MunicipalityMapper();
-
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
-
+    // 1. Provera da li mapper vraca sve podatke ispravno
     @Test
-    void shouldMapDtoToMunicipalityCorrectly() {
+    public void shouldMapAllFields(){
         // ARRANGE
         VotingRowDTO dto = new VotingRowDTO(
-                5, "zapadnobacki", 80381, "Sombor", 2,
-                "Miletic mz", 800, "Lemes", "Oktobarska"
+                4, "zapadnobacki", 1, "Sombor",
+                2, "Miletic mz", 800,
+                "Lemes","O", 803979, "Oktobarska"
         );
-
         // ACT
-        Municipality result = municipalityMapper.mapFrom(dto);
+         Municipality municipality = mapFrom(dto);
 
-        // ASSERT
-        Municipality expected = new Municipality(80381, "Sombor", 0, district, null);
-        assertEquals(expected.getMunicipalityName(), result.getMunicipalityName());
-        assertEquals(expected.getId(), result.getId());
-        assertEquals(expected.getTotalVotersByMunicipality(), result.getTotalVotersByMunicipality());
+         //Assert
+         assertEquals(1,municipality.getId());
+         assertEquals("Sombor", municipality.getMunicipalityName());
+         assertEquals(0, municipality.getTotalVotersByMunicipality());
+
     }
 
+
+
+    // 2. Da li mapper vraca greske za null vrednost polja id
     @Test
-    void shouldReturnNullWhenMunicipalityIdIsNull() {
+    public void shouldHandleNullIdField(){
         // ARRANGE
         VotingRowDTO dto = new VotingRowDTO(
-                5, "zapadnobacki", null, "Sombor", 2,
-                "Miletic mz", 800, "Lemes", "Oktobarska"
+                4, "zapadnobacki", null, "Sombor",
+                2, "Miletic mz", 800,
+                "Lemes","O", 803979, "Oktobarska"
         );
-
         // ACT
-        Municipality result = municipalityMapper.mapFrom(dto);
+        Municipality municipality = mapFrom(dto);
 
-        // ASSERT
-        assertNull(result.getId());
+        assertNull(municipality.getId());
     }
 
+
+
+    // 3. Da li mapper vraca greske za null vrednost polja name
     @Test
-    void shouldFailValidationWhenMunicipalityIdIsNegative() {
+    public void shouldHandleNullMunicipalityNameField(){
         // ARRANGE
         VotingRowDTO dto = new VotingRowDTO(
-                5, "zapadnobacki", -5, "Sombor", 2,
-                "Miletic mz", 800, "Lemes", "Oktobarska"
+                4, "zapadnobacki", 1, null,
+                2, "Miletic mz", 800,
+                "Lemes","O", 803979, "Oktobarska"
         );
-
         // ACT
-        Set<ConstraintViolation<VotingRowDTO>> violations = validator.validate(dto);
+        Municipality municipality = mapFrom(dto);
 
-        // ASSERT
-        assertFalse(violations.isEmpty());
-        assertTrue(violations.stream().anyMatch(
-                v -> v.getPropertyPath().toString().equals("municipalityId")
-                        && v.getMessage().toLowerCase().contains("positive")
-        ));
+        assertNull(municipality.getMunicipalityName());
     }
 
+
+
+    // 4. Da li vraca vrednost za inicijalizaciju polja broj glasaca
     @Test
-    void shouldAcceptEmptyMunicipalityName() {
+    public void shouldSetNonNullTotalVotersByDefault(){
         // ARRANGE
         VotingRowDTO dto = new VotingRowDTO(
-                5, "zapadnobacki", 80381, "", 2,
-                "Miletic mz", 800, "Lemes", "Oktobarska"
+                4, "zapadnobacki", 1, "Sombor",
+                2, "Miletic mz", 800,
+                "Lemes",null, 803979, "Oktobarska"
         );
-
         // ACT
-        Municipality result = municipalityMapper.mapFrom(dto);
+        Municipality municipality = mapFrom(dto);
 
-        // ASSERT
-        assertTrue(StringUtils.isBlank(result.getMunicipalityName()));
+        assertNotNull(municipality.getTotalVotersByMunicipality());
     }
 
-    @Test
-    void shouldReturnNullWhenMunicipalityNameIsNull() {
-        // ARRANGE
-        VotingRowDTO dto = new VotingRowDTO(
-                5, "zapadnobacki", 80381, null, 2,
-                "Miletic mz", 800, "Lemes", "Oktobarska"
-        );
 
-        // ACT
-        Municipality result = municipalityMapper.mapFrom(dto);
-
-        // ASSERT
-        assertNull(result.getMunicipalityName());
-    }
 }

@@ -46,10 +46,19 @@ public class VotingRowDTO {
 
     @NotBlank(message = "Settlement cannot be blank.")
     @Size(max = 100, message = "Settlement name cannot exceed 100 characters.")
-    private String settlement;
+    private String settlementName;
+
+    @NotBlank(message = "SettlementType cannot be blank.")
+    @Size(max = 1, message = "SettlementType  cannot exceed 1 character.")
+    private String settlementType;
+
+    @NotNull(message = "Settlement ID cannot be null.")
+    @Min(value = 1, message = "Settlement ID must be a positive number.")
+    private Integer settlementId;
 
     @NotBlank(message = "Street cannot be blank.")
     @Size(max = 200, message = "Street name cannot exceed 200 characters.")
-    private String street;
+    private String streetName;
+
 }
 

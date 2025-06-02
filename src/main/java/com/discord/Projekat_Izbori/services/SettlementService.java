@@ -23,7 +23,7 @@ public class SettlementService {
 
     public Settlement findOrCreateSettlement(VotingRowDTO dto, Municipality municipality) {
         Optional<Settlement> existingSettlement =
-                settlementRepository.findBySettlementNameAndMunicipalityId(dto.getSettlement(), municipality.getId());
+                settlementRepository.findBySettlementNameAndMunicipalityId(dto.getSettlementName(), municipality.getId());
 
         if (existingSettlement.isPresent()) {
             return existingSettlement.get();

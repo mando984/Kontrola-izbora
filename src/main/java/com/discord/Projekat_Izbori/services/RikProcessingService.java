@@ -59,7 +59,7 @@ public class RikProcessingService {
 
             Settlement settlement = settlementService.findOrCreateSettlement(dto, municipality);
 
-            String settlementMapKey = dto.getSettlement() + "_" + dto.getMunicipalityId();
+            String settlementMapKey = dto.getSettlementName() + "_" + dto.getMunicipalityId();
             if (settlement.getVotersBySettlement() == 0 && settlementTotalVoters.containsKey(settlementMapKey)) {
                 settlementService.updateSettlementTotalVoters(settlement.getId(), settlementTotalVoters.get(settlementMapKey));
             }
