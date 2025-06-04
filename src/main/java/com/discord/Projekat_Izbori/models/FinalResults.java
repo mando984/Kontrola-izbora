@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -29,14 +31,11 @@ public class FinalResults {
     private Integer unusedBallots;
 
     @OneToOne
-    @JoinColumn(name = "polling_place_id")
+    @JoinColumn(name = "polling_place_id", nullable = false, unique = true)
     @JsonIgnore
     private PollingPlace pollingPlace;
 
-
-    @ManyToOne
-    @JoinColumn(name = "final_results_id")
-    @JsonIgnore
-    private FinalResults finalResults;
+    @OneToMany(mappedBy = "finalResults", cascade = CascadeType.ALL)
+    private List<PoliticalPartyFinalResults> politicalPartyFinalResultsList;
 
 }

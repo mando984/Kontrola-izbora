@@ -12,8 +12,9 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "political_party_score")
-public class PoliticalPartyResult {
+@Table(name = "political_party_final_results",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"political_party_id", "final_results_id"}))
+public class PoliticalPartyFinalResults {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,13 +23,13 @@ public class PoliticalPartyResult {
     @Column(nullable = false)
     private Integer numberOfVotes;
 
-    @OneToOne
-    @JoinColumn(name = "political_party_id")
+    @ManyToOne
+    @JoinColumn(name = "political_party_id", nullable = false)
     @JsonIgnore
     private PoliticalParty politicalParty;
 
     @ManyToOne
-    @JoinColumn(name = "final_results_id")
+    @JoinColumn(name = "final_results_id", nullable = false)
     @JsonIgnore
     private FinalResults finalResults;
 

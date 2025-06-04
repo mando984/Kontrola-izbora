@@ -1,7 +1,7 @@
 package com.discord.Projekat_Izbori.repositories;
 
-import com.discord.Projekat_Izbori.models.PoliticalPartyResult;
+import com.discord.Projekat_Izbori.models.PoliticalPartyFinalResults;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PoliticalPartyResultRepository extends JpaRepository<PoliticalPartyResult, Integer> {
+public interface PoliticalPartyResultRepository extends JpaRepository<PoliticalPartyFinalResults, Integer> {
 }

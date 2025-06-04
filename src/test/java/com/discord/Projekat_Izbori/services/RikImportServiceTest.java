@@ -1,7 +1,6 @@
 package com.discord.Projekat_Izbori.services;
 
 import com.discord.Projekat_Izbori.dto.input.VotingRowDTO;
-import com.discord.Projekat_Izbori.exceptions.DataIntegrityException;
 import com.discord.Projekat_Izbori.exceptions.InvalidJsonFormatException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Validator;
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class) // Obavezno za Mockito
-class RikImportServiceUnitTest {
+class RikImportServiceTest {
 
     @Mock // Mockiramo ObjectMapper, jer ne želimo da testiramo Jackson, već RikImportService
     private ObjectMapper objectMapper;

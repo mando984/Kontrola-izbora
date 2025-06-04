@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -22,8 +24,7 @@ public class PoliticalParty {
     @Column(nullable = false, unique = true)
     private String politicalPartyName;
 
-    @OneToOne
-    @JoinColumn(name = "political_party_result_id")
+    @OneToMany(mappedBy = "politicalParty")
     @JsonIgnore
-    private PoliticalPartyResult politicalPartyResult;
+    private List<PoliticalPartyFinalResults> politicalPartyFinalResultsList;
 }

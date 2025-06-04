@@ -48,8 +48,7 @@ public class PollingPlace {
     @OneToMany(mappedBy = "pollingPlace", cascade = CascadeType.ALL)
     private List<Irregularity> irregularities;
 
-    @OneToOne
-    @JoinColumn(name = "final_results_id")
+    @OneToOne(mappedBy = "pollingPlace")
     @JsonIgnore
     private FinalResults finalResults;
 }
