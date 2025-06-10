@@ -30,7 +30,7 @@ class DistrictMapperTest {
         District district = districtMapper.mapFrom(dto);
 
         // ASSERT
-        District expected = new District(4, "zapadnobacki", 0, null);
+        District expected = new District(4, "zapadnobacki", 0, null,null);
         assertEquals(expected.getDistrictName(), district.getDistrictName());
         assertEquals(expected.getId(), district.getId());
         assertEquals(expected.getTotalVotersByDistrict(), district.getTotalVotersByDistrict());

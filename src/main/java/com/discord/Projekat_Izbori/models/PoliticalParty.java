@@ -25,6 +25,8 @@ public class PoliticalParty {
     private String politicalPartyName;
 
     @OneToMany(mappedBy = "politicalParty")
-    @JsonIgnore
     private List<PoliticalPartyFinalResults> politicalPartyFinalResultsList;
+
+    @OneToOne(mappedBy = "politicalParty")
+    private CommissionMember commissionMember;
 }

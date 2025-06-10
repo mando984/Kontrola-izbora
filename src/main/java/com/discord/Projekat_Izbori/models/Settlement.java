@@ -39,4 +39,7 @@ public class Settlement {
 
     @OneToMany(mappedBy = "settlement", cascade = CascadeType.ALL)
     private List<PollingPlace> pollingPlaces;
+
+    @OneToMany(mappedBy = "settlement")
+    private List<Controller> controllers;
 }

@@ -49,6 +49,14 @@ public class PollingPlace {
     private List<Irregularity> irregularities;
 
     @OneToOne(mappedBy = "pollingPlace")
-    @JsonIgnore
     private FinalResults finalResults;
+
+    @OneToOne(mappedBy = "pollingPlace")
+    private DiscordCategory discordCategory;
+
+    @OneToMany(mappedBy = "pollingPlace")
+    private List<CommissionMember> commissionMembers;
+
+    @OneToMany(mappedBy = "pollingPlace")
+    private List<Controller> controllers;
 }

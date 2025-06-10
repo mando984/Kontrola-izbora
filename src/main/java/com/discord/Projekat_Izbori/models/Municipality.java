@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "municipality")
+@Table(name = "municipality", uniqueConstraints = @UniqueConstraint(columnNames = {"id", "district_id"}))
 public class Municipality {
 
     @Id

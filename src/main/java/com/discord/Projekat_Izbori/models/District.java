@@ -28,5 +28,8 @@ public class District {
     @OneToMany(mappedBy = "district", cascade = CascadeType.ALL)
     private List<Municipality> municipalities;
 
+    @OneToMany(mappedBy = "district", cascade = CascadeType.ALL)
+    private List<Coordinator> coordinators;
+
 
 }
