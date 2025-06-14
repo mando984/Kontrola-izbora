@@ -34,7 +34,7 @@ public class DiscordCategory {
     private PollingPlace pollingPlace;
 
     @OneToMany(mappedBy = "discordCategory", cascade = CascadeType.ALL)
-    private List<Discord_channel> discordChannels;
+    private List<DiscordChannel> discordChannels;
 
     @OneToMany(mappedBy = "discordCategory", cascade = CascadeType.ALL)
     private List<Controller> controllers;
