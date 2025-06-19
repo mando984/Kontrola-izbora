@@ -3,14 +3,19 @@ package com.discord.Projekat_Izbori.mappers;
 import com.discord.Projekat_Izbori.dto.input.VotingRowDTO;
 import com.discord.Projekat_Izbori.models.Settlement;
 import com.discord.Projekat_Izbori.models.SettlementType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.discord.Projekat_Izbori.mappers.SettlementMapper.mapFrom;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SettlementMapperTest {
 
+    private SettlementMapper settlementMapper;
 
+    @BeforeEach
+    void setUp(){
+        settlementMapper = new SettlementMapper();
+    }
 
     // 1. Proveriti da li vraca sve podatke ispravno
     @Test
@@ -22,7 +27,7 @@ class SettlementMapperTest {
                 "Lemes","O", 803979, "Oktobarska"
         );
 
-        Settlement settlement = mapFrom(dto);
+        Settlement settlement = settlementMapper.mapFrom(dto);
 
         assertEquals("Lemes", settlement.getSettlementName());
         assertEquals(803979, settlement.getId());
@@ -41,7 +46,7 @@ class SettlementMapperTest {
                 null,"O", 803979, "Oktobarska"
         );
 
-        Settlement settlement = mapFrom(dto);
+        Settlement settlement = settlementMapper.mapFrom(dto);
         assertNull(settlement.getSettlementName());
 
     }
@@ -53,8 +58,8 @@ class SettlementMapperTest {
                 2, "Miletic mz", 800,
                 "lemes",null, 803979, "Oktobarska"
         );
-        Settlement settlement = mapFrom(dto);
-        assertEquals(SettlementType.VILLAGE, settlement.getSettlementType());
+        Settlement settlement = settlementMapper.mapFrom(dto);
+        assertNull(settlement.getSettlementType());
     }
 
 

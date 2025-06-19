@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PollingPlaceMapper {
 
-    public static PollingPlace mapFrom(VotingRowDTO dto){
+    public  PollingPlace mapFrom(VotingRowDTO dto){
 
         PollingPlace pollingPlace = new PollingPlace();
         pollingPlace.setId(dto.getPollingPlaceId());

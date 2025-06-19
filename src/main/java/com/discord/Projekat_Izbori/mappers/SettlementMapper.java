@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SettlementMapper {
 
-    public static Settlement mapFrom(VotingRowDTO dto){
+    public Settlement mapFrom(VotingRowDTO dto){
 
         Settlement settlement = new Settlement();
         settlement.setId(dto.getSettlementId());
@@ -22,7 +22,7 @@ public class SettlementMapper {
                 settlement.setSettlementType(SettlementType.VILLAGE);
             }
         }catch (NullPointerException e){
-            settlement.setSettlementType(SettlementType.VILLAGE);
+            e.getMessage();
         }
         return settlement;
     }

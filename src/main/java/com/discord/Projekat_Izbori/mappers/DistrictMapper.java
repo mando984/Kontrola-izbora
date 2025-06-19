@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DistrictMapper {
 
-    public static District mapFrom(VotingRowDTO dto){
+    public  District mapFrom(VotingRowDTO dto){
 
         District district = new District();
         district.setId(dto.getDistrictId());

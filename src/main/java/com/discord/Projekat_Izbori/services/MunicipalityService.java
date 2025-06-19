@@ -17,7 +17,7 @@ public class MunicipalityService {
     private final MunicipalityMapper municipalityMapper;
 
 
-    public MunicipalityService(MunicipalityRepository municipalityRepository, MunicipalityMapper municipalityMapper, DistrictService districtService, VotingAggregator votingAggregator) {
+    public MunicipalityService(MunicipalityRepository municipalityRepository, MunicipalityMapper municipalityMapper) {
         this.municipalityRepository = municipalityRepository;
         this.municipalityMapper = municipalityMapper;
     }

@@ -64,7 +64,7 @@ class DistrictMapperTest {
         );
 
         // ACT
-        District district = DistrictMapper.mapFrom(dto);
+        District district = districtMapper.mapFrom(dto);
 
         // ASSERT
         assertNull(district.getDistrictName(), "District name should be null when input is null");
@@ -81,7 +81,7 @@ class DistrictMapperTest {
         );
 
         // ACT
-        District district = DistrictMapper.mapFrom(dto);
+        District district = districtMapper.mapFrom(dto);
 
         // ASSERT
         assertTrue(StringUtils.isBlank(district.getDistrictName()), "District name should be blank");

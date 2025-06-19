@@ -2,12 +2,20 @@ package com.discord.Projekat_Izbori.mappers;
 
 import com.discord.Projekat_Izbori.dto.input.VotingRowDTO;
 import com.discord.Projekat_Izbori.models.Municipality;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static com.discord.Projekat_Izbori.mappers.MunicipalityMapper.mapFrom;
+import org.mockito.Mock;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MunicipalityMapperTest {
 
+    private MunicipalityMapper municipalityMapper;
+
+    @BeforeEach
+    void setUp(){
+        municipalityMapper = new MunicipalityMapper();
+    }
 
     // 1. Provera da li mapper vraca sve podatke ispravno
     @Test
@@ -19,7 +27,7 @@ class MunicipalityMapperTest {
                 "Lemes","O", 803979, "Oktobarska"
         );
         // ACT
-         Municipality municipality = mapFrom(dto);
+         Municipality municipality = municipalityMapper.mapFrom(dto);
 
          //Assert
          assertEquals(1,municipality.getId());
@@ -40,7 +48,7 @@ class MunicipalityMapperTest {
                 "Lemes","O", 803979, "Oktobarska"
         );
         // ACT
-        Municipality municipality = mapFrom(dto);
+        Municipality municipality = municipalityMapper.mapFrom(dto);
 
         assertNull(municipality.getId());
     }
@@ -57,7 +65,7 @@ class MunicipalityMapperTest {
                 "Lemes","O", 803979, "Oktobarska"
         );
         // ACT
-        Municipality municipality = mapFrom(dto);
+        Municipality municipality = municipalityMapper.mapFrom(dto);
 
         assertNull(municipality.getMunicipalityName());
     }
@@ -74,7 +82,7 @@ class MunicipalityMapperTest {
                 "Lemes",null, 803979, "Oktobarska"
         );
         // ACT
-        Municipality municipality = mapFrom(dto);
+        Municipality municipality = municipalityMapper.mapFrom(dto);
 
         assertNotNull(municipality.getTotalVotersByMunicipality());
     }

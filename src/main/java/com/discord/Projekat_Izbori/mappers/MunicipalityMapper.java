@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MunicipalityMapper {
 
-    public static Municipality mapFrom(VotingRowDTO dto){
+    public Municipality mapFrom(VotingRowDTO dto){
 
         Municipality municipality = new Municipality();
         municipality.setMunicipalityName(dto.getMunicipalityName());

@@ -110,7 +110,7 @@ class RikImportServiceTest {
         assertTrue(thrown.getCause() instanceof com.fasterxml.jackson.core.JsonParseException);
     }
 
-    // Dodaj test za ImportFileNotFoundException (kada resource.exists() vrati false)
+    //  test za ImportFileNotFoundException (kada resource.exists() vrati false)
     @Test
     void shouldThrowImportFileNotFoundExceptionWhenResourceDoesNotExist() throws IOException {
         // ARRANGE

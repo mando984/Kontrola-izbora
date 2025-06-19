@@ -9,5 +9,6 @@ public interface DistrictRepository extends JpaRepository<District, Integer> {
 
     @Override
     Optional<District> findById(Integer integer);
+
     Optional<District> findByDistrictName(String districtName);
 }
