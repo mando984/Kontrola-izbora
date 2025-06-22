@@ -19,7 +19,6 @@ import java.util.List;
 public class Settlement {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "settlement_name", nullable = false)

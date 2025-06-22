@@ -11,11 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,8 +28,6 @@ public class DistrictServiceTest {
 
     @InjectMocks
     private DistrictService districtService;
-
-
     private VotingRowDTO votingRowDTO1;
     private VotingRowDTO votingRowDTO2;
 
@@ -45,14 +40,12 @@ public class DistrictServiceTest {
 
     @Test
     void shouldReturnExistingDistrictWhenFound(){
-        //Arrange
         // ARRANGE
         District existingDistrict = new District();
         existingDistrict.setId(votingRowDTO1.getDistrictId()); // Koristi ID iz DTO-a
         existingDistrict.setDistrictName(votingRowDTO1.getDistrictName());
         existingDistrict.setTotalVotersByDistrict(500);
 
-        // Ako DistrictService koristi findById (što je manje verovatno za proveru postojanja po DTO-u)
         when(districtRepository.findById(votingRowDTO1.getDistrictId()))
                 .thenReturn(Optional.of(existingDistrict));
 
@@ -91,28 +84,59 @@ public class DistrictServiceTest {
         // Mock ponašanje districtMapper.mapFrom()
         when(districtMapper.mapFrom(any(VotingRowDTO.class)))
                 .thenReturn(newDistrict);
-
         // Mock ponašanje districtRepository.save()
         when(districtRepository.save(any(District.class)))
                 .thenReturn(savedDistrict);
-
         //ACT
         District districtResult = districtService.findOrCreateDistrict(votingRowDTO2);
-
         // ASSERT
-
         assertNotNull(districtResult);
         assertEquals(savedDistrict.getId(), districtResult.getId());
         assertEquals(savedDistrict.getDistrictName(), districtResult.getDistrictName());
         assertEquals(savedDistrict.getTotalVotersByDistrict(), districtResult.getTotalVotersByDistrict());
-
-
         //da je findById() pozvan jednom
         verify(districtRepository, times(1)).findById(votingRowDTO2.getDistrictId());
-
         // 3. Verifikuj da su mapper i save metoda pozvani tačno jednom
         verify(districtMapper, times(1)).mapFrom(votingRowDTO2); // Proveri da li je pozvan sa ispravnim DTO-om
         verify(districtRepository, times(1)).save(newDistrict);
     }
 
+
+    @Test
+    void shouldUpdateDistrictTotalVotersWhenDistrictExists(){
+        //ARRANGE
+        Integer districtIdToUpdate = 1;
+        Integer newTotalVoters = 1455;
+        District existingDistrict = new District();
+        existingDistrict.setId(districtIdToUpdate);
+        existingDistrict.setDistrictName("Existing");
+        existingDistrict.setTotalVotersByDistrict(300);
+
+        when(districtRepository.findById(districtIdToUpdate))
+                .thenReturn(Optional.of(existingDistrict));
+
+        when(districtRepository.save(any(District.class)))
+                .thenReturn(existingDistrict);
+        //ACT
+        districtService.updateDistrictTotalVoters(districtIdToUpdate, newTotalVoters);
+        // ASSERT
+        verify(districtRepository, times(1)).findById(districtIdToUpdate);
+        assertEquals(newTotalVoters, existingDistrict.getTotalVotersByDistrict());
+        verify(districtRepository, times(1)).save(existingDistrict);
+    }
+
+
+    @Test
+    void shouldNotUpdateDistrictTotalVotersWhenDistrictDoesNotExist(){
+        Integer notExistingDistrictId = 999;
+        Integer newTotalVoters = 3243;
+        when(districtRepository.findById(notExistingDistrictId))
+                .thenReturn(Optional.empty());
+
+        districtService.updateDistrictTotalVoters(notExistingDistrictId, newTotalVoters);
+        // ASSERT
+        verify(districtRepository, times(1)).findById(notExistingDistrictId);
+        verify(districtRepository, never()).save(any(District.class));
+
+    }
 }
